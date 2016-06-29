@@ -37,6 +37,7 @@ gulp.task('styles', function () {
         /*.pipe(gulp.dest('dist/css'))
         .pipe(rename({suffix: '.min'}))*///生成min文件
         .pipe(cssnano())//压缩css
+        /*.pipe(concat("main.css"))*///合并css
         .pipe(gulp.dest('dist/css'))
         .pipe(notify({message: 'Styles task complete'}));
 });
@@ -52,6 +53,7 @@ gulp.task("scripts", function () {
         .pipe(gulp.dest("dist/js"))
         .pipe(notify({message: "scripts task ok"}));
 });
+
 
 //压缩图片
 gulp.task("images", function () {
