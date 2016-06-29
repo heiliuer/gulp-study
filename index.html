@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>待办任务</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="css/weui.css">
+    <link rel="stylesheet" href="css/index/index.css">
+</head>
+<body>
+
+<section class="todoapp">
+
+
+    <div class="weui_cells weui_cells_form weui_cells_checkbox">
+        <div class="weui_cell weui_cell_bd weui_cell_primary">
+            <input v-model="newTodo" @keyup.enter="addTodo" autofocus autocomplete="off"
+                   placeholder="add todo"
+                   class="weui_input">
+        </div>
+    </div>
+
+
+    <section v-show="todos.length" v-cloak>
+        <div class="weui_cells">
+            <div class="weui_cell" v-for="todo in filtedTodos">
+                <div class="weui_cell weui_check_label">
+                    <input type="checkbox" :disabled="editedTodo==todo" v-model="todo.completed" class="weui_switch">
+                </div>
+
+                <div class="weui_cell_bd weui_cell_primary" v-show="editedTodo!=todo" @click="editTodo(todo)">
+                    <p :class="{todo__completed:todo.completed}">
+                        {{todo.title}}
+                    </p>
+                </div>
+
+                <div class="weui_cell_bd weui_cell_primary" v-show="editedTodo==todo">
+                    <input class="weui_input" type="text" v-model="todo.title" v-todo-focus="editedTodo==todo"
+                           @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)">
+                </div>
+
+                <i class="weui_icon_cancel" @click="removeTodo(todo)"></i>
+            </div>
+        </div>
+
+        <div class="weui_cells" style="position: fixed;bottom: 0;width: 100%;">
+            <div class="weui_cell">
+                <div class="weui_cell weui_check_label">
+                    <input type="checkbox" v-model="allDone" class="weui_switch">
+                </div>
+                <div class="weui_cell_bd weui_cell_ft">
+                    <p>{{doneMsg}}</p>
+                </div>
+                <div class="weui_cell_bd bottom_bar_right">
+                    <a href="#/active" :class="{selected:visibility=='active'}">active</a>
+                    <a href="#/completed" :class="{selected:visibility=='completed'}">completed</a>
+                    <a href="#/all" :class="{selected:visibility=='all'}">all</a>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</section>
+
+<script src="js/vue.js"></script>
+<script src="js/director.js"></script>
+<script src="js/index/store.js"></script>
+<script src="js/index/app.js"></script>
+<script src="js/index/router.js"></script>
+
+</body>
+</html>
