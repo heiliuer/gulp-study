@@ -12,6 +12,7 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     notify = require('gulp-notify'),
     cache = require('gulp-cache'),
+    clean = require("gulp-clean"),
     livereload = require('gulp-livereload'),
     del = require('del'),
     yargs = require('yargs').argv,
@@ -20,7 +21,7 @@ var gulp = require('gulp'),
 
 gulp.task("default", function () {
     //默认任务 执行多个任务
-    gulp.start("htmls", 'styles', 'scripts', 'images', "watch", "server");//不需要执行clean任务，不然总会提示文件找不到
+    gulp.start("htmls", 'styles', 'scripts', 'images', "watch", "server");
 });
 
 //压缩htmls
@@ -35,7 +36,7 @@ gulp.task('styles', function () {
     return gulp.src('css/**/*.css')
         .pipe(autoprefixer('last 2 version'))//css添加厂商标示 如 -webkit
         /*.pipe(gulp.dest('dist/css'))
-        .pipe(rename({suffix: '.min'}))*///生成min文件
+         .pipe(rename({suffix: '.min'}))*///生成min文件
         .pipe(cssnano())//压缩css
         /*.pipe(concat("main.css"))*///合并css
         .pipe(gulp.dest('dist/css'))
@@ -48,11 +49,13 @@ gulp.task("scripts", function () {
         .pipe(jshint(".jshintrc"))//检查代码错误和质量，输出结果
         .pipe(jshint.reporter("default"))
         /*.pipe(gulp.dest("dist/js"))
-        .pipe(rename({suffix: ".min"}))*///生成min文件
+         .pipe(rename({suffix: ".min"}))*///生成min文件
         .pipe(uglify())//混淆代码
         .pipe(gulp.dest("dist/js"))
         .pipe(notify({message: "scripts task ok"}));
 });
+
+//添加md5后缀
 
 
 //压缩图片
@@ -66,9 +69,16 @@ gulp.task("images", function () {
         .pipe(notify({message: "images task ok"}));
 });
 
+
+//清理输出
+gulp.task("cleanc", function () {
+    del(["dist/*"]);
+});
+
 //清理输出
 gulp.task("clean", function () {
-    del(["dist/**/*"]);
+    return gulp.src("dist/*", {read: false})
+        .pipe(clean());
 });
 
 
